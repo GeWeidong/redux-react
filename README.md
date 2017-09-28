@@ -9,9 +9,23 @@
 - [[React Native]Redux的基本使用方式](http://www.jianshu.com/p/f1a3c7845bb9)
 - [Redux管理复杂应用数据逻辑](http://luoxia.me/code/2016/10/04/Redux%E7%AE%A1%E7%90%86%E5%A4%8D%E6%9D%82%E5%BA%94%E7%94%A8%E6%95%B0%E6%8D%AE%E9%80%BB%E8%BE%91/)
 
+## 目录
+* [应用场景](#应用场景)
+* [使用的三原则](#使用的三原则)
+    * 单一数据源
+    * 状态是只读的
+    * 通过纯函数修改State
+* [redux状态管理的流程及相关概念](#redux状态管理的流程及相关概念)
+    * store
+    * Action
+    * Action 创建函数(Action Creator)
+    * Reducer
+* [redux如何与组件结合](#redux如何与组件结合)
+    * 具体示例1
+    * 具体示例2
 
-
-#### 1.应用场景
+应用场景
+------
 
 React设计理念之一为单向数据流，这从一方面方便了数据的管理。但是React本身只是view，并没有提供完备的数据管理方案。随着应用的不断复杂化，如果用react构建前端应用的话，就要应对纷繁复杂的数据通信和管理，js需要维护更多的状态（state），这些state可能包括用户信息、缓存数据、全局设置状态、被激活的路由、被选中的标签、是否加载动效或者分页器等等。
    
@@ -32,23 +46,26 @@ React设计理念之一为单向数据流，这从一方面方便了数据的管
 
 > 比如，论坛应用中的夜间设置、回到顶部、userInfo全局共享等场景。redux最终目的就是让状态(state)变化变得可预测.
 
-#### 2.使用的三原则
+使用的三原则
+------
 
 - 单一数据源
 >  整个应用的state，存储在唯一一个object中，同时也只有一个store用于存储这个object.
+
 - 状态是只读的
 > 唯一能改变state的方法，就是触发action操作。action是用来描述正在发生的事件的一个对象
+
 - 通过纯函数修改State
 > 纯函数的问题，也是来自于函数式编程思想，我们在中学时学的函数就是纯函数，对于同一个输入，必然有相同的输出。这就保证了数据的可控性，这里的纯函数就是reducer
 
-#### 3.redux状态管理的流程
-
+redux状态管理的流程及相关概念
+------
 
 ![image](http://upload-images.jianshu.io/upload_images/1400529-59aa52304c232986.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 - **store**
 
-Store 就是保存数据的地方，你可以把它看成一个容器。整个应用只能有一个 Store。(一个store是一个对象, reducer会改变store中的某些值)
+Store 就是保存数据的地方，保存着本程序所有的redux管理的数据，你可以把它看成一个容器。整个应用只能有一个 Store。(一个store是一个对象, reducer会改变store中的某些值)
 
 Redux 提供createStore这个函数，用来生成 Store。
 
@@ -97,7 +114,7 @@ export default thunk;
 
 ---
 
-Store 有以下职责：
+**Store 有以下职责：**
 
 - 提供 getState() 方法获取 state；
 - 提供 dispatch(action) 方法更新 state；
@@ -198,10 +215,10 @@ Action 创建函数 就是生成 action 的方法。“action” 和 “action �
 import * as types from './actionTypes';
 // 设置详情页内容文字主题
 let changeText = (theme) => {
-	return {
-		type: types.CHANGE_SET_TEXT,
-		theme
-	}
+    return {
+        type: types.CHANGE_SET_TEXT,
+        theme
+    }
 }   
 
 // 函数changeText就是一个简单的action creator。
@@ -213,36 +230,36 @@ let changeText = (theme) => {
 import * as types from './actionTypes';
 
 let setTitle = (value) => {
-	return (dispatch, getState) => {
-		dispatch(changeValue(value))
-	}
+    return (dispatch, getState) => {
+        dispatch(changeValue(value))
+    }
 }
 
 let setText = (text) => {
-	return dispatch => {
-		dispatch(changeText(text))
-	}
+    return dispatch => {
+        dispatch(changeText(text))
+    }
 }
 
 // 修改标题颜色主题
 let changeValue = (titleTheme) => {
-	return {
-		type: types.CHANGE_SET_SWITCH,
-		titleTheme
-	}
+    return {
+        type: types.CHANGE_SET_SWITCH,
+        titleTheme
+    }
 }
 
 // 设置详情页内容文字颜色
 let changeText = (textColor) => {
-	return {
-		type: types.CHANGE_SET_TEXT,
-		textColor
-	}
+    return {
+        type: types.CHANGE_SET_TEXT,
+        textColor
+    }
 }
 
 export {
-	setText,
-	setTitle
+    setText,
+    setTitle
 };
 ```
 
@@ -270,26 +287,26 @@ Reducer 是一个函数，它接受 Action 和当前 State 作为参数，返回
 import * as types from '../actions/actionTypes';
 
 const initialState = {
-	titleTheme: false,
-	textColor: false
+    titleTheme: false,
+    textColor: false
 }
 // 这里一个技巧是使用 ES6 参数默认值语法 来精简代码
 let setReducer = (state = initialState, action) => {
 
-	switch(action.type){
-		case types.CHANGE_SET_SWITCH:
-			return Object.assign({}, state, {
-				titleTheme: action.titleTheme,
-			})
+    switch(action.type){
+        case types.CHANGE_SET_SWITCH:
+            return Object.assign({}, state, {
+                titleTheme: action.titleTheme,
+            })
 
-		case types.CHANGE_SET_TEXT:
-			return Object.assign({}, state, {
-				textColor: action.textColor
-			})
+        case types.CHANGE_SET_TEXT:
+            return Object.assign({}, state, {
+                textColor: action.textColor
+            })
 
-		default:
-			return state;
-	}
+        default:
+            return state;
+    }
 }
 
 export default setReducer
@@ -298,8 +315,8 @@ export default setReducer
 > 注意：
 
 - 不要修改 state。 使用 Object.assign() 新建了一个副本。不能这样使用 Object.assign(state, {
-				titleTheme: action.titleTheme,
-			})，因为它会改变第一个参数的值。你必须把第一个参数设置为空对象。你也可以开启对ES7提案对象展开运算符的支持, 从而使用 { ...state, ...newState } 达到相同的目的。
+                titleTheme: action.titleTheme,
+            })，因为它会改变第一个参数的值。你必须把第一个参数设置为空对象。你也可以开启对ES7提案对象展开运算符的支持, 从而使用 { ...state, ...newState } 达到相同的目的。
 - 在 default 情况下返回旧的 state。遇到未知的 action 时，一定要返回旧的 state
 
 ==**关于拆分Reducer**==
@@ -335,8 +352,8 @@ export default rootReducer = combineReducers({
 
 这样根据这个根reducer，可以生成store，请看上文store的创建过程。
 
-#### 4.redux如何与组件结合
-
+redux如何与组件结合
+------
 以上部分介绍了Redux 涉及的基本概念，下面介绍与组件交互的工作流程。
 
 梳理一下Redux的工作流程：
@@ -422,77 +439,77 @@ import HeaderView from '../common/HeaderView';
 import {setText,setTitle} from '../actions/setAction';
 
 export default class SetPage extends Component {
-	constructor(props){
-		super(props);
-		this.state = {
-			switchValue: false,
-			textValue: false
-		}
+    constructor(props){
+        super(props);
+        this.state = {
+            switchValue: false,
+            textValue: false
+        }
 
-		this.onValueChange = this.onValueChange.bind(this);
-		this.onTextChange = this.onTextChange.bind(this);
-	}
+        this.onValueChange = this.onValueChange.bind(this);
+        this.onTextChange = this.onTextChange.bind(this);
+    }
 
-	componentDidMount() {
-		// console.log(this.props)
-	}
+    componentDidMount() {
+        // console.log(this.props)
+    }
 
-	onValueChange(bool) {
-		const { dispatch } = this.props;
-		this.setState({
-			switchValue: bool
-		})
-		dispatch(setTitle(bool));
-	}
+    onValueChange(bool) {
+        const { dispatch } = this.props;
+        this.setState({
+            switchValue: bool
+        })
+        dispatch(setTitle(bool));
+    }
 
-	onTextChange(bool) {
-		const { dispatch } = this.props;
+    onTextChange(bool) {
+        const { dispatch } = this.props;
 
-		this.setState({
-			textValue: bool
-		});
+        this.setState({
+            textValue: bool
+        });
 
-		dispatch(setText(bool));
-	}
+        dispatch(setText(bool));
+    }
 
-	render() {
-		return (
-			<View>
-		        <HeaderView
-		          titleView= {'设置'}
-		          />
+    render() {
+        return (
+            <View>
+                <HeaderView
+                  titleView= {'设置'}
+                  />
 
-		        <View>
-		        	<View style={styles.itemContainer}>
-						<Text style={{fontSize: 16}}>全局设置标题主题</Text>
-						<Switch 
-							onValueChange={this.onValueChange}
-							value={this.state.switchValue}
-						/>
-					</View>
+                <View>
+                    <View style={styles.itemContainer}>
+                        <Text style={{fontSize: 16}}>全局设置标题主题</Text>
+                        <Switch 
+                            onValueChange={this.onValueChange}
+                            value={this.state.switchValue}
+                        />
+                    </View>
 
-					<View style={styles.itemContainer}>
-						<Text style={{fontSize: 16}}>设置详情页文字主题</Text>
-						<Switch 
-							onValueChange={this.onTextChange}
-							value={this.state.textValue}
-						/>
-					</View>
-		        </View>
-			</View>
-		)
-	}
+                    <View style={styles.itemContainer}>
+                        <Text style={{fontSize: 16}}>设置详情页文字主题</Text>
+                        <Switch 
+                            onValueChange={this.onTextChange}
+                            value={this.state.textValue}
+                        />
+                    </View>
+                </View>
+            </View>
+        )
+    }
 }
 
 const styles = StyleSheet.create({
-	itemContainer:{
-		paddingLeft: 20,
-		paddingRight: 20,
-		height: 40,
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center'
-	}
+    itemContainer:{
+        paddingLeft: 20,
+        paddingRight: 20,
+        height: 40,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    }
 })
 ```
 
@@ -509,36 +526,37 @@ dispatch(setTitle(bool));
 import * as types from './actionTypes';
 
 let setTitle = (value) => {
-	return (dispatch, getState) => {
-		dispatch(changeValue(value))
-	}
+    return (dispatch, getState) => {
+        dispatch(changeValue(value))
+    }
 }
 
 let setText = (text) => {
-	return dispatch => {
-		dispatch(changeText(text))
-	}
+    return dispatch => {
+        dispatch(changeText(text))
+    }
 }
 
 // 修改标题主题
 let changeValue = (titleTheme) => {
-	return {
-		type: types.CHANGE_SET_SWITCH,
-		titleTheme
-	}
+    return {
+        type: types.CHANGE_SET_SWITCH,
+        // 这里将titleTheme状态返回
+        titleTheme
+    }
 }
 
 // 设置详情页内容文字主题
 let changeText = (textColor) => {
-	return {
-		type: types.CHANGE_SET_TEXT,
-		textColor
-	}
+    return {
+        type: types.CHANGE_SET_TEXT,
+        textColor
+    }
 }
 
 export {
-	setText,
-	setTitle
+    setText,
+    setTitle
 };
 ```
 
@@ -550,26 +568,26 @@ export {
 import * as types from '../actions/actionTypes';
 
 const initialState = {
-	titleTheme: false,
-	textColor: false
+    titleTheme: false,
+    textColor: false
 }
 
 let setReducer = (state = initialState, action) => {
 
-	switch(action.type){
-		case types.CHANGE_SET_SWITCH:
-			return Object.assign({}, state, {
-				titleTheme: action.titleTheme,
-			})
+    switch(action.type){
+        case types.CHANGE_SET_SWITCH:
+            return Object.assign({}, state, {
+                titleTheme: action.titleTheme,
+            })
 
-		case types.CHANGE_SET_TEXT:
-			return Object.assign({}, state, {
-				textColor: action.textColor
-			})
+        case types.CHANGE_SET_TEXT:
+            return Object.assign({}, state, {
+                textColor: action.textColor
+            })
 
-		default:
-			return state;
-	}
+        default:
+            return state;
+    }
 }
 
 export default setReducer
