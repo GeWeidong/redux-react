@@ -931,4 +931,4 @@ render() {
 - 视图通过connect函数绑定到store，当store状态变化后，store会通知视图刷新。
 - 触发一个action之后，会经过可能N个reducers处理，最后根reducer会将所有reducers处理之后的状态合并，然后交给store，store再通知视图刷新。
 
-**本文的源码地址：** [案例](http://pan.baidu.com/s/1pLTyU9t)，提取码： lt1x
+**本文的源码地址：** [案例Demo](https://github.com/GeWeidong/redux-react)
