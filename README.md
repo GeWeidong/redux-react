@@ -121,7 +121,7 @@ export default thunk;
 - 通过 subscribe(listener) 注册监听器;
 - 通过 subscribe(listener) 返回的函数注销监听器。
 
-==一般情况下，我们只需要getState()和dispatch()方法即可，即可以解决绝大部分问题。==
+***一般情况下，我们只需要getState()和dispatch()方法即可，即可以解决绝大部分问题。***
 
 **我们可以自定义中间件**
 
@@ -275,7 +275,7 @@ Reducer 是一个函数，它接受 Action 和当前 State 作为参数，返回
 ```
 (previousState, action) => newState
 ```
-==Reducer必须保持绝对纯净，永远不要在 reducer 里做这些操作：==
+***Reducer必须保持绝对纯净，永远不要在 reducer 里做这些操作：***
 
 - 修改传入参数；
 - 执行有副作用的操作，如 API 请求和路由跳转；
@@ -319,7 +319,7 @@ export default setReducer
             })，因为它会改变第一个参数的值。你必须把第一个参数设置为空对象。你也可以开启对ES7提案对象展开运算符的支持, 从而使用 { ...state, ...newState } 达到相同的目的。
 - 在 default 情况下返回旧的 state。遇到未知的 action 时，一定要返回旧的 state
 
-==**关于拆分Reducer**==
+***关于拆分Reducer***
 
 这里只是举例了一个简单的功能的reducer，如果有不同的功能，需要设计很多reducer方法，注意每个 reducer 只负责管理全局 state 中它负责的一部分。每个 reducer 的 state 参数都不同，分别对应它管理的那部分 state 数据。
 
@@ -327,7 +327,7 @@ export default setReducer
 
 ![image.png](http://upload-images.jianshu.io/upload_images/5339345-22685df9481cad4d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-其中==rootReducer.js就是一个根reducer文件，使用了Redux 的 combineReducers() 工具类来进行封装整合。==
+其中rootReducer.js就是一个根reducer文件，使用了Redux 的 `combineReducers()` 工具类来进行封装整合。
 
 ```
 /**
@@ -377,7 +377,7 @@ let newState = store.getState();
 component.setState(newState);
 ```
 
-==具体示例1：==
+***具体示例1：***
 
 ![fsdf.gif](http://upload-images.jianshu.io/upload_images/5339345-925cd030c6313047.gif?imageMogr2/auto-orient/strip)
 
@@ -595,7 +595,7 @@ export default setReducer
 
 最简单的reducer，就是根据初始值和action对象，返回一个新的state，提供给store，这样，页面里可以从store中获取到这些全局的state，用于更新组件。
 
-==我们只是写了怎样发送action和接收action发出newState的，下面来看这个标题组件是怎样和redux结合的。==
+***我们只是写了怎样发送action和接收action发出newState的，下面来看这个标题组件是怎样和redux结合的。***
 
 5.HeaderView组件
 
@@ -706,7 +706,7 @@ export default connect((state) => {
 })(HeaderView);
 ```
 
-==这个组件同样利用connect方法绑定了redux，变成了容器组件（container component）。==
+***这个组件同样利用connect方法绑定了redux，变成了容器组件（container component）。***
 
 connect真的很关键，请详细查看官方文档，上面有链接。
 
@@ -717,7 +717,7 @@ connect真的很关键，请详细查看官方文档，上面有链接。
 const { titleTheme } = this.props.setReducer;
 ```
 
-==具体示例2：==
+***具体示例2：***
 
 ![image.png](http://upload-images.jianshu.io/upload_images/5339345-c22fb919ad328684.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
